@@ -6,8 +6,8 @@ from sklearn.metrics import precision_score, recall_score, roc_curve, auc, accur
 import pandas as pd
 
 # Configuration section
-iter = 1
-cvCount = 5
+iter = 5
+cvCount = 6
 seed = 42
 thresholdRange = np.linspace(start=0.46, stop=0.54, num=50)
 

@@ -5,11 +5,11 @@ from sklearn.model_selection import ParameterGrid, StratifiedKFold
 from sklearn.metrics import accuracy_score
 
 # Configuration section
-iter = 1
-cvCount = 5
+iter = 5
+cvCount = 6
 seed = 42
-wdiff = 0.5
-wtest = 0.5
+wdiff = 0.6
+wtest = 0.4
 
 # Load list of best parameters from Random Search
 with open('ListOfBestParamsRS.pkl', 'rb') as f:
