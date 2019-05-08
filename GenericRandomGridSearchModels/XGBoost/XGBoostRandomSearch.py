@@ -9,8 +9,8 @@ from sklearn.metrics import accuracy_score
 iter = 5
 cvCount = 6
 seed = 42
-wdiff = 0.7
-wtest = 0.3
+wdiff = 0.5
+wtest = 0.5
 numSamples = 1000
 
 # Best parameter list
