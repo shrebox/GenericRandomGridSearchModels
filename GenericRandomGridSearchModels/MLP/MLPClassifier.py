@@ -60,7 +60,6 @@ for threshold in thresholdRange:
             predictions = getPredictionsGivenThreshold(predictionsProb, threshold)
             precision = precision_score(Y_te, predictions)
             recall = recall_score(Y_te, predictions)
-            fpr, tpr, thresholds = roc_curve(Y_te, predictions, pos_label=1)
             auroc = roc_auc_score(Y_te, predictionsProb[:, 1])
             accuracy = accuracy_score(Y_te, predictions)
             matthewsCoeff = matthews_corrcoef(Y_te, predictions)
