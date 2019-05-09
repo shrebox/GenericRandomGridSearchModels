@@ -46,9 +46,7 @@ for i in range(iter):
     combination_list = []
     train_acc_list = []
     test_acc_list = []
-    tracker = 0
     for combination in randomCombinations:
-        print(tracker)
         skf = StratifiedKFold(n_splits=cvCount, random_state=seed, shuffle=True)
         s = 0
         tr_acc = 0
@@ -68,7 +66,6 @@ for i in range(iter):
         score_list.append(s / cvCount)
         train_acc_list.append(tr_acc / cvCount)
         test_acc_list.append(te_acc / cvCount)
-        tracker += 1
     req_idx = score_list.index(max(score_list))
     best_params.append(combination_list[req_idx])
     print(str(i) + '-' + str(train_acc_list[req_idx]) + '-' + str(test_acc_list[req_idx]))
