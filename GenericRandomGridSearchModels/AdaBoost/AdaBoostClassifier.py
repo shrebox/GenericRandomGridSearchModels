@@ -2,7 +2,7 @@ import pickle
 import numpy as np
 from sklearn.model_selection import StratifiedKFold
 from sklearn.ensemble import AdaBoostClassifier
-from sklearn.metrics import precision_score, recall_score, roc_curve, auc, accuracy_score, matthews_corrcoef
+from sklearn.metrics import precision_score, recall_score, roc_auc_score, accuracy_score, matthews_corrcoef
 import pandas as pd
 
 # Configuration section
@@ -60,7 +60,7 @@ for threshold in thresholdRange:
             precision = precision_score(Y_te, predictions)
             recall = recall_score(Y_te, predictions)
             fpr, tpr, thresholds = roc_curve(Y_te, predictions, pos_label=1)
-            auroc = auc(fpr, tpr)
+            auroc = roc_auc_score(Y_te, predictionsProb[:, 1])
             accuracy = accuracy_score(Y_te, predictions)
             matthewsCoeff = matthews_corrcoef(Y_te, predictions)
 
