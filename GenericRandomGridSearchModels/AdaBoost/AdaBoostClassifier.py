@@ -41,44 +41,32 @@ for threshold in thresholdRange:
     overallAccuracy = 0
     overallMc = 0
     for i in range(iter):
-        X_train = np.load('X_test_' + str(i) + '.npy')
-        Y_train = np.load('Y_test_' + str(i) + '.npy')
-        skf = StratifiedKFold(n_splits=cvCount, random_state=seed)
-        foldPrecision = 0
-        foldRecall = 0
-        foldAuauc = 0
-        foldAccuracy = 0
-        foldMc = 0
-        for train_index, test_index in skf.split(X_train, Y_train):
-            X_tr, X_te = X_train[train_index], X_train[test_index]
-            Y_tr, Y_te = Y_train[train_index], Y_train[test_index]
-            bp = best_params[i]
-            clf = AdaBoostClassifier(base_estimator=bp['base_estimator'], n_estimators=bp['n_estimators'],
-                                     algorithm=bp['algorithm'], random_state=seed).fit(X_tr, Y_tr.ravel())
-            predictionsProb = clf.predict_proba(X_te)
-            predictions = getPredictionsGivenThreshold(predictionsProb, threshold)
-            precision = precision_score(Y_te, predictions)
-            recall = recall_score(Y_te, predictions)
-            auroc = roc_auc_score(Y_te, predictionsProb[:, 1])
-            accuracy = accuracy_score(Y_te, predictions)
-            matthewsCoeff = matthews_corrcoef(Y_te, predictions)
+        X_train = np.load('X_train_' + str(i) + '.npy')
+        Y_train = np.load('Y_train_' + str(i) + '.npy')
+        X_test = np.load('X_test_' + str(i) + '.npy')
+        Y_test = np.load('Y_test_' + str(i) + '.npy')
+        bp = best_params[i]
+        clf = AdaBoostClassifier(base_estimator=bp['base_estimator'], n_estimators=bp['n_estimators'],
+                                 algorithm=bp['algorithm'], random_state=seed).fit(X_train, Y_train.ravel())
+        predictionsProb = clf.predict_proba(X_test)
+        predictions = getPredictionsGivenThreshold(predictionsProb, threshold)
+        precision = precision_score(Y_test, predictions)
+        recall = recall_score(Y_test, predictions)
+        auroc = roc_auc_score(Y_test, predictionsProb[:, 1])
+        accuracy = accuracy_score(Y_test, predictions)
+        matthewsCoeff = matthews_corrcoef(Y_test, predictions)
 
-            foldPrecision += precision
-            foldRecall += recall
-            foldAuauc += auroc
-            foldAccuracy += accuracy
-            foldMc += matthewsCoeff
-        overallPrecision = overallPrecision + (foldPrecision/cvCount)
-        overallRecall = overallRecall + (foldRecall/cvCount)
-        overallAuauc = overallAuauc + (foldAuauc/cvCount)
-        overallAccuracy = overallAccuracy + (foldAccuracy/cvCount)
-        overallMc = overallMc + (foldMc/cvCount)
+        overallPrecision += precision
+        overallRecall += recall
+        overallAuauc += auroc
+        overallAccuracy +=accuracy
+        overallMc += matthewsCoeff
     thresholdList.append(threshold)
-    precisionList.append(overallPrecision/iter)
-    recallList.append(overallRecall/iter)
-    aucList.append(overallAuauc/iter)
-    accuracyList.append(overallAccuracy/iter)
-    mcList.append(overallMc/iter)
+    precisionList.append(overallPrecision / iter)
+    recallList.append(overallRecall / iter)
+    aucList.append(overallAuauc / iter)
+    accuracyList.append(overallAccuracy / iter)
+    mcList.append(overallMc / iter)
 
 df = pd.DataFrame()
 df['Threshold'] = thresholdList
